@@ -1,0 +1,33 @@
+{
+  "kind": "Ingress",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "http-ingress",
+    "namespace": "tv-5gcicd"
+  },
+  "spec": {
+    "rules": [
+      {
+        "host": "dashboard-tv-5gcicd.eccd-udm00001.seli.gic.ericsson.se",
+        "http": {
+          "paths": [
+            {
+              "path": "/",
+              "backend": {
+                "serviceName": "dashboard-tv-5gcicd-serv",
+                 "servicePort": 3030
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "status": {
+    "loadBalancer": {
+      "ingress": [
+        {}
+      ]
+    }
+  }
+}

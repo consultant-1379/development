@@ -1,0 +1,41 @@
+<script type='text/javascript'>
+$(function() {
+Dashing.numColumns = 20;
+Dashing.widget_margins = [3, 10];
+Dashing.widget_base_dimensions = [70, 45]
+});
+</script>
+
+<% content_for :title do %>ADP Generic Service Metrics<% end %>
+<center><div style="font-size: 72px"> ADP Generic Service Metrics </div></center>
+<br>
+
+<center>
+<a style="font-size: 36px; color: grey;" href="adp_dashboard"> Generic Services  &nbsp;&nbsp;</a>
+<a style="font-size: 36px; color: grey;" href="devenv_dashboard">&nbsp;&nbsp; KaaS and Development Environment </a>
+<a style="font-size: 36px;" href="generic_service_metrics">&nbsp;&nbsp; Metrics </a>
+</center>
+
+<div class="gridster">
+  <ul>
+    <li data-row="1"
+        data-col="1"
+        data-sizex="8" 
+        data-sizey="5">
+           <div data-id="metricsA" data-server="Metrics"
+                   data-view="MetricsWindow"></div>
+         
+    </li>
+
+    <li data-row="1"
+        data-col="8"
+        data-sizex="8" 
+        data-sizey="5">
+          <div data-id="metricsB" data-server="Metrics"
+                   data-view="MetricsWindow"></div>
+  </li>
+  </ul>
+</div>
+
+<br>
+<br>

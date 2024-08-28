@@ -1,0 +1,41 @@
+# Docs to generate
+# raml2html and rst2pdf --> indicate folder and file(s) to generate
+# latexpdf --> invoked by make. One input folder, one output folder and one or many output files
+docs_to_generate:
+  raml2html:
+    - folder: /home/5gcicd/documentation/api/rest
+      input: SD_Rest_Api.raml
+      output: SD_Rest_Api.html
+  rst2pdf:
+    - folder: /home/5gcicd/documentation/api/dns
+      input: SD_Dns_Api.rst
+      output: SD_Dns_Api.pdf
+  make:
+    - latexpdf:
+        inputfolder: /home/5gcicd/documentation
+        outputfolder: /home/5gcicd/documentation/_build/latex
+        outputfiles:
+          - ServiceDiscoveryServiceSystemAdministratorGuide.pdf
+          - ServiceDiscoveryServiceUserGuide.pdf
+
+# Docs to upload to OpenALM
+# Physical files MUST be the same as the generated documents in the previous step,
+# except the path to the file.
+# The script move all files, once are generated, to a folder where the upload process
+# take all of them
+# folder_name --> it's like a breadcrumb
+folders:
+  - folder_name: SD Interface Description 1.0.0/SD HTTP Interface Description
+    docs_to_upload:
+      - name: SD_Rest_Api.html
+        file: SD_Rest_Api.html
+  - folder_name: SD Interface Description 1.0.0/SD DNS interface Description
+    docs_to_upload:
+      - name: SD_Dns_Api.html
+        file: SD_Dns_Api.pdf
+  - folder_name: SD Micro-Service 1.1.0
+    docs_to_upload:
+      - name: Service Discovery Service System Administrator Guide
+        file: ServiceDiscoveryServiceSystemAdministratorGuide.pdf
+      - name: Service Discovery Service User Guide
+        file: ServiceDiscoveryServiceUserGuide.pdf

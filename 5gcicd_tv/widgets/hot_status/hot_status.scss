@@ -1,0 +1,83 @@
+// ----------------------------------------------------------------------------
+// Mixins
+// ----------------------------------------------------------------------------
+@mixin transition($transition-property, $transition-time, $method) {
+  -webkit-transition: $transition-property $transition-time $method;
+  -moz-transition: $transition-property $transition-time $method;
+  -o-transition: $transition-property $transition-time $method;
+  transition: $transition-property $transition-time $method;
+}
+
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color: #000000;
+//$title-color: rgba(255, 255, 255, 0.7);
+$status-color: #FFFFFF;
+//$message-color: rgba(255, 255, 255, 0.7);
+//$updated-at-color: rgba(0, 0, 0, 0.3);
+
+// ----------------------------------------------------------------------------
+// Widget-status styles
+// ----------------------------------------------------------------------------
+.widget-hot-status {
+
+  background-color: $background-color;
+  @include transition(background-color, 1s, linear);
+
+  .title {
+    //color: $title-color;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 25px;
+    margin-top: -15px;
+  }
+
+  .status {
+    //color: $status-color;
+    font-size: 40px;
+  }
+
+  .message {
+    //color: $message-color;
+    font-size: 40px;
+  }
+
+  .moreinfo {
+    //color: $message-color;
+    font-size: 18px;
+  }
+
+  .updated-at {
+    //color: $updated-at-color;
+  }
+
+}
+
+.hot-status-ok       { background-color: #00C176; }
+.hot-status-warning  { background-color: #FABb00; }
+.hot-status-critical { background-color: #E32119; }
+.hot-status-unknown  { background-color: #B1B3B4; }
+.hot-status-ok-gradient-1       { background: -webkit-linear-gradient(#00C176, #00C176, #00C176, #00C176, #00C176);} //Green,  green, green, green, green
+.hot-status-warning-gradient-1  { background: -webkit-linear-gradient(#FABb00, #00C176, #00C176, #00C176, #00C176);} //Orange, green, green, green, green
+.hot-status-critical-gradient-1 { background: -webkit-linear-gradient(#E32119, #00C176, #00C176, #00C176, #00C176);} //Red,    green, green, green, green
+.hot-status-unknown-gradient-1  { background: -webkit-linear-gradient(#B1B3B4, #00C176, #00C176, #00C176, #00C176);} //Greay,  green, green, green, green
+.hot-status-ok-gradient-2       { background: -webkit-linear-gradient(#00C176, #00C176, #00C176, #00C176, #00C176, #00C176);} //Green(2),  green, green, green, green
+.hot-status-warning-gradient-2  { background: -webkit-linear-gradient(#FABb00, #FABb00, #00C176, #00C176, #00C176, #00C176);} //Orange(2), green, green, green, green
+.hot-status-critical-gradient-2 { background: -webkit-linear-gradient(#E32119, #E32119, #00C176, #00C176, #00C176, #00C176);} //Red(2),    green, green, green, green
+.hot-status-unknown-gradient-2  { background: -webkit-linear-gradient(#B1B3B4, #B1B3B4, #00C176, #00C176, #00C176, #00C176);} //Greay(2),  green, green, green, green
+.hot-status-ok-gradient-3       { background: -webkit-linear-gradient(#00C176, #00C176, #00C176, #00C176, #00C176, #00C176, #00C176);} //Green(3),  green, green, green, green
+.hot-status-warning-gradient-3  { background: -webkit-linear-gradient(#FABb00, #FABb00, #FABb00, #00C176, #00C176, #00C176, #00C176);} //Orange(3), green, green, green, green
+.hot-status-critical-gradient-3 { background: -webkit-linear-gradient(#E32119, #E32119, #E32119, #00C176, #00C176, #00C176, #00C176);} //Red(3),    green, green, green, green
+.hot-status-unknown-gradient-3  { background: -webkit-linear-gradient(#B1B3B4, #B1B3B4, #B1B3B4, #00C176, #00C176, #00C176, #00C176);} //Greay(3),  green, green, green, green
+.hot-status-ok-gradient-4       { background: -webkit-linear-gradient(#00C176, #00C176, #00C176, #00C176, #00C176, #00C176, #00C176, #00C176);} //Green(4),  green, green, green, green
+.hot-status-warning-gradient-4  { background: -webkit-linear-gradient(#FABb00, #FABb00, #FABb00, #FABb00, #00C176, #00C176, #00C176, #00C176);} //Orange(4), green, green, green, green
+.hot-status-critical-gradient-4 { background: -webkit-linear-gradient(#E32119, #E32119, #E32119, #E32119, #00C176, #00C176, #00C176, #00C176);} //Red(4),    green, green, green, green
+.hot-status-unknown-gradient-4  { background: -webkit-linear-gradient(#B1B3B4, #B1B3B4, #B1B3B4, #B1B3B4, #00C176, #00C176, #00C176, #00C176);} //Greay(4),  green, green, green, green
+.hot-status-ok-gradient-5       { background: -webkit-linear-gradient(#00C176, #00C176, #00C176, #00C176, #00C176, #00C176, #00C176, #00C176, #00C176);} //Green(5),  green, green, green, green
+.hot-status-warning-gradient-5  { background: -webkit-linear-gradient(#FABb00, #FABb00, #FABb00, #FABb00, #FABb00, #00C176, #00C176, #00C176, #00C176);} //Orange(5), green, green, green, green
+.hot-status-critical-gradient-5 { background: -webkit-linear-gradient(#E32119, #E32119, #E32119, #E32119, #E32119, #00C176, #00C176, #00C176, #00C176);} //Red(5),    green, green, green, green
+.hot-status-unknown-gradient-5  { background: -webkit-linear-gradient(#B1B3B4, #B1B3B4, #B1B3B4, #B1B3B4, #B1B3B4, #00C176, #00C176, #00C176, #00C176);} //Greay(5),  green, green, green, green
+

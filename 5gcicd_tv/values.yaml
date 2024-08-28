@@ -1,0 +1,43 @@
+replicaCount: 1
+image:
+  repository: armdocker.rnd.ericsson.se/proj-5g-cicd-dev/visibilityspots/smashing
+  tag: 1.0.2
+  pullPolicy: Always
+service:
+  name: dashboard-5gcicd
+  type: NodePort
+  externalPort: 6060
+  internalPort: 6060
+  nodePort: 30912
+ingress:
+  host: http-ingress
+jenkinsServers: >-
+  {
+    "jenkins": [
+      {
+        "name": "jnksnr-jenkins",
+        "host": "eccd-udm00001.seli.gic.ericsson.se",
+        "uri": "http://10.210.121.59:30892",
+        "uri_suffix": "",
+        "user": "esdccci",
+        "pass": "Pcdlcci1"
+      },
+      {
+        "name": "fem101-eiffel012-jenkins",
+        "host": "lmera.ericsson.se",
+        "uri": "https://fem101-eiffel012.lmera.ericsson.se:8443",
+        "uri_suffix": "jenkins",
+        "user":"esdccci",
+        "pass":"Pcdlcci1"
+      },
+      {
+        "name": "testing-jenkins",
+        "host": "erikube-udm00008.seli.gic.ericsson.se",
+        "uri": "http://10.210.121.218:30900",
+        "uri_suffix": "",
+        "user": "esdccci",
+        "pass": "Pcdlcci1"
+      }
+    ]
+  }
+

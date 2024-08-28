@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}-metrics-window-w
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ template "dashboard.chart" . }}
+    release: {{ .Release.Name | replace "." "_" }}
+    heritage: {{ .Release.Service }}
+data:
+{{ (.Files.Glob "widgets/metrics_window/*").AsConfig | indent 2 }}
+
+

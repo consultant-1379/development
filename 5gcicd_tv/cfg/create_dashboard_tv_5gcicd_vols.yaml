@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dashing-dashboards
+  namespace: tv-5gcicd
+spec:
+  resources:
+    requests:
+      storage: 64Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: erikube-nfs
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dashing-jobs
+  namespace: tv-5gcicd
+spec:
+  resources:
+    requests:
+      storage: 64Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: erikube-nfs
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dashing-public
+  namespace: tv-5gcicd
+spec:
+  resources:
+    requests:
+      storage: 64Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: erikube-nfs
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dashing-assets
+  namespace: tv-5gcicd
+spec:
+  resources:
+    requests:
+      storage: 64Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: erikube-nfs
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dashing-widgets
+  namespace: tv-5gcicd
+spec:
+  resources:
+    requests:
+      storage: 64Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: erikube-nfs
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dashing-config
+  namespace: tv-5gcicd
+spec:
+  resources:
+    requests:
+      storage: 64Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: erikube-nfs
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dashing-clone
+  namespace: tv-5gcicd
+spec:
+  resources:
+    requests:
+      storage: 64Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: erikube-nfs
+
+

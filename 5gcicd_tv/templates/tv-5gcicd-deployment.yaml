@@ -1,0 +1,74 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ template "dashboard.chart" . }}
+    release: {{ .Release.Name | replace "." "_" }}
+    heritage: {{ .Release.Service }}
+spec:
+  revisionHistoryLimit: 0
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+      annotations:
+        checksum/jobs: {{ include (print $.Template.BasePath "/jobs-config.yaml") . | sha256sum }}
+        checksum/dashboards: {{ include (print $.Template.BasePath "/dashboards-config.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/config-config.yaml") . | sha256sum }}
+        checksum/buildhistory-w: {{ include (print $.Template.BasePath "/widget-buildhistory-config.yaml") . | sha256sum }}
+        checksum/jenkins-build-status-w: {{ include (print $.Template.BasePath "/widget-jenkins-build-status-config.yaml") . | sha256sum }}
+        checksum/metrics-window-w: {{ include (print $.Template.BasePath "/widget-metrics-window-config.yaml") . | sha256sum }}
+        checksum/vtext-w: {{ include (print $.Template.BasePath "/widget-vtext-config.yaml") . | sha256sum }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          - name: PORT
+            value: "{{ .Values.service.internalPort }}"
+          - name: GEMS
+            value: sinatra_cyclist
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+        volumeMounts:
+            - name: jobs
+              mountPath: "/jobs"
+            - name: dashboards
+              mountPath: "/dashboards"
+            - name: config
+              mountPath: "/config"
+            - name: buildhistory-w
+              mountPath: "/widgets/buildhistory"
+            - name: jenkins-build-status-w
+              mountPath: "/widgets/jenkins_build_status"
+            - name: metrics-window-w
+              mountPath: "/widgets/metrics_window"
+            - name: vtext-w
+              mountPath: "/widgets/vtext"
+      volumes:
+      - name: jobs
+        configMap:
+          name: {{ template "fullname" . }}-jobs
+      - name: dashboards
+        configMap:
+          name: {{ template "fullname" . }}-dashboards
+      - name: config
+        configMap:
+          name:  {{ template "fullname" . }}-config
+      - name: buildhistory-w
+        configMap:
+          name:  {{ template "fullname" . }}-buildhistory-w
+      - name: jenkins-build-status-w
+        configMap:
+          name:  {{ template "fullname" . }}-jenkins-build-status-w
+      - name: metrics-window-w
+        configMap:
+          name:  {{ template "fullname" . }}-metrics-window-w
+      - name: vtext-w
+        configMap:
+          name:  {{ template "fullname" . }}-vtext-w

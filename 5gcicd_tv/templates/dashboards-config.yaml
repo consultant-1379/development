@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}-dashboards
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ template "dashboard.chart" . }}
+    release: {{ .Release.Name | replace "." "_" }}
+    heritage: {{ .Release.Service }}
+data:
+{{ (.Files.Glob "dashboards/*").AsConfig | indent 2 }}
+  {{- range .Values.pages }}
+  {{ . }}_dashboard.erb: |
+  {{ include "service_dashboard" . | indent 2 }}
+  {{- end }}

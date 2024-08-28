@@ -1,0 +1,407 @@
+<script type='text/javascript'>
+    $(function() {
+        // These settings override the defaults set in application.coffee. You can do this on a per dashboard basis.
+        /*Dashing.gridsterLayout('[{"col":2,"row":1},{"col":1,"row":1},{"col":3,"row":1},{"col":2,"row":2},{"col":3,"row":2},{"col":1,"row":2},{"col":5,"row":1},{"col":4,"row":2},{"col":2,"row":3}]')
+        Dashing.widget_base_dimensions = [ 350, 290 ]
+        Dashing.widget_margins = [ 5, 5 ]
+        Dashing.numColumns = 5*/
+    });
+
+    $(document).ready(function(e) {
+        $("#job-selector").html('')
+        $("div[data-text='Jenkins']").each(function() {
+            jobDiv = $("#job-selector").append(
+            $("<div />").attr("id",
+            $(this).attr("data-id")).attr(
+            "jobselectable", "true").text(
+            $(this).attr("data-title")).css(
+            "cursor", "pointer"));
+        });
+        var divJobsLength = $("[name='jobs'").length
+        var widthDiv = eval((100 / divJobsLength) - 1) + "%"
+        $("[name='jobs'").each(function() {
+            $(this).css("width", widthDiv);
+            var totalJobs = 0;
+            var successJobs = 0;
+            var failedJobs = 0;
+            var idProject = $(this).attr("id");
+            var childsProject = $("#" + idProject).children();
+            $(childsProject).each(function(){
+                var rgbColor = $(this).css('backgroundColor');
+                var hexColor = ""
+                if (rgbColor.startsWith ("rgba")) hexColor = rgba2hex(rgbColor);
+                else hexColor = rgb2hex(rgbColor);
+                if ($(this).attr("class") == "job")
+                    totalJobs++;
+                if ($(this).attr("class") == "job" && hexColor == "#96bf48")
+                    successJobs++;
+                if ($(this).attr("class") == "job" && hexColor == "#d26771")
+                    failedJobs++;
+
+            });
+            $("#totalJobs" + idProject).text(totalJobs)
+            $("#successJobs" + idProject).text(successJobs)
+            $("#failedJobs" + idProject).text(failedJobs)
+	    });
+	});
+
+	function rgb2hex(colorval) {
+	    var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+	    if (parts == null || parts[0] == null || parts[0] == "undefined")
+	        color = "#000";
+	    else {
+	        delete(parts[0]);
+	        for (var i = 1; i <= 3; ++i) {
+	            parts[i] = parseInt(parts[i]).toString(16);
+	                if (parts[i].length == 1) parts[i] = '0' + parts[i];
+	        }
+	        color = '#' + parts.join('');
+	    }
+	    return color;
+	}
+
+	function rgba2hex(colorval) {
+	    colorval = colorval.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+	    return (colorval && colorval.length === 4) ? "#" +
+	        ("0" + parseInt(colorval[1],10).toString(16)).slice(-2) +
+	        ("0" + parseInt(colorval[2],10).toString(16)).slice(-2) +
+	        ("0" + parseInt(colorval[3],10).toString(16)).slice(-2) : '';
+    }
+
+    function blinker(dataid) {
+        for (i = 0; i < 5; i++) {
+            $("div[data-id='" + dataid + "']").fadeOut(500);
+            $("div[data-id='" + dataid + "']").fadeIn(500);
+        }
+        setTimeout(function() {
+            $("div[data-id='" + dataid + "']").stop(false, true, true);
+        }, 1000)
+    }
+
+    $(document).on('click', "div[jobselectable='true']", function(e) {
+        var dataid = $(this).attr("id");
+        var datatitle = $(this).text();
+        var divtofocus = $("div[data-id='" + dataid + "']")
+        $('html, body').animate({
+            scrollTop : $("div[data-id='" + dataid + "']").offset().top
+        }, 500);
+        blinker(dataid);
+    })
+    function backtotop() {
+        $('html, body').animate({
+            scrollTop : 0
+        }, 'fast');
+    }
+</script>
+
+<style type="text/css">
+body {
+    overflow-x: hidden;
+}
+
+li {
+    float: left;
+    position: relative;
+    display: inline-block;
+    width: 98%;
+    padding: 0;
+    margin: 0;
+    border: 4px solid #222222;
+}
+
+.divgridster {
+    width: 100%;
+    margin: 10px;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+h4 {
+    font-size: 16px;
+}
+
+.title {
+    width: 100%;
+    margin-bottom: 11px;
+    /* white-space: nowrap; */
+}
+
+.headerJob {
+    font-size: 18px;
+    font-weight: bold;
+    background: #0645ad;
+    height: 100px;
+    border-radius: 25px 25px 5px 5px;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 0px 10px 10px;
+}
+
+.job {
+    height: 75px;
+    margin: 0px 0px 5px 10px;
+    border-radius: 10px;
+    float: left;
+    width: -webkit-fill-available;
+}
+
+.widget {
+    font-size: 10px;
+    width: 20%;
+    padding: 5px;
+}
+
+.jobFinder {
+    background-color: gray;
+    padding-top: 5px;
+    padding-left: 20px;
+    padding-bottom: 3px;
+    color: white;
+    margin-bottom: 0px;
+    margin-left: 14px;
+    margin-top: 14px;
+    text-align: center;
+    font-weight: bold;
+    width: 23%;
+    border-bottom: 2px solid black;
+}
+
+.jobSelector {
+    float: left;
+    height: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 23%;
+    margin-bottom: 14px;
+    margin-left: 14px;
+    background: grey;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.more-info {
+    position: relative !important;
+}
+
+.updated-at {
+    position: relative !important;
+    bottom: 0px !important;
+}
+</style>
+
+<div class="jobFinder">JOB FINDER</div>
+<div style="width: 100%">
+    <div id="job-selector" class="jobSelector"></div>
+    <div style="background-color: rgb(0, 0, 255) none repeat scroll 0% 0%; color: rgb(0, 0, 0); float: right; width: 71%; height: 200px; margin-bottom: 14px; margin-left: 0px; margin-right: 39px; background: grey; font-size: 80px; text-align: center; padding: 10px; position: relative; padding-left: 23px;">
+        <p>FEM101-EIFFEL012-JENKINS</p>
+        <p>ALL JOBS</p>
+    </div>
+</div>
+<div class="divgridster">
+    <div name="jobs" id="HSS" style="float:left">
+        <!--  HSS -->
+        <div class="headerJob" >
+            <table id="countJobs">
+                <tr>
+                    <td colspan="3">HSS</td>
+                </tr>
+                <tr>
+                    <td>TOTAL</td>
+                    <td>SUCCESS</td>
+                    <td>FAIL</td>
+                </tr>
+                <tr>
+                    <td id="totalJobsHSS"></td>
+                    <td id="successJobsHSS"></td>
+                    <td id="failedJobsHSS"></td>
+                 </tr>
+            </table>
+        </div>
+        <div style="width:94%" class="job" data-id="HSS_5G_mason_fem101-eiffel012", data-view="JenkinsBuild", 
+             data-title="HSS 5G mason", data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="HSS_5G_apigw_fem101-eiffel012", data-view="JenkinsBuild", 
+             data-title="HSS 5G apigw", data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="HSS_5G_apigw4g_fem101-eiffel012", data-view="JenkinsBuild", 
+             data-title="HSS 5G apigw4g", data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="HSS_5G_apigw_TEST_fem101-eiffel012", data-view="JenkinsBuild", 
+             data-title="HSS 5G apigw TEST", data-text="Jenkins">
+        </div>
+    </div>
+    <div name="jobs" id="POLICY" style="float: left;">
+        <!--  POLICY -->
+        <div class="headerJob">
+            POLICY
+        </div>
+        <div style="width:94%" class="job" data-id="Policy_5G_common_fem101-eiffel012",
+             data-view="JenkinsBuild" data-title="Policy 5G common", data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="Policy_5G_provisioning_TEST_fem101-eiffel012",
+             data-view="JenkinsBuild" data-title="Policy 5G provisioning TEST",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="Policy_5G_provisioning_TEST2_fem101-eiffel012",
+             data-view="JenkinsBuild" data-title="Policy 5G provisioning TEST2",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="Policy_5G_slice-selection-control_fem101-eiffel012",
+            data-view="JenkinsBuild" data-title="Policy 5G slice-selection-control",
+            data-text="Jenkins">
+        </div>
+    </div>
+    <div  name="jobs" id="UDR" style="float: left;">
+        <!-- UDR -->
+        <div class="headerJob" >
+            UDR
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_backuprestore-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR backuprestore merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_backuprestore-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR backuprestore testing",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_cmagent-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR cmagent merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_cmagent-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR cmagent testing",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_dbservice-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR dbservice merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_dbservice-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR dbservice testing",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_init_dependency_checker-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR init dependency checker merge job",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_init_dependency_checker-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR init dependency checker testing job",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_integration-test-image-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR integration test image merge job",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_integration-test-image-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR integration test image testing job",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_ldap_balancer-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR ldap balancer merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_ldap_balancer-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR ldap balancer testing",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_ldapfe-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR ldapfe merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_ldapfe-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR ldapfe testing",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_notifchecker-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR notifchecker merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_notifchecker-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR notifchecker testing",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_notifsender-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR notifsender merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_notifsender-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR notifsender testing",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_nudrfe-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR nudrfe merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_nudrfe-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR nudrfe testing",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_pipeline_verify_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR pipeline verify",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_release-merge-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR release merge",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="UDR_release-testing-job_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="UDR release testing",
+             data-text="Jenkins">
+        </div>
+    </div>
+    <div  name="jobs" id="CUDB" style="float: left;">
+        <!--  CUDB -->
+        <div class="headerJob" >
+            CUDB
+        </div>
+    </div>
+    <div  name="jobs" id="NRF-AUSF" style="float: left;">
+        <!-- NRF-AUSF -->
+        <div class="headerJob" >
+            NRF-AUSF
+        </div>
+        <div style="width:94%" class="job" data-id="AUSF_DropA_Daily_FT_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="AUSF DropA Daily FT",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="AUSF_Function_Test_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="AUSF Function Test",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="AUSF_precommit_check_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="AUSF precommit check",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="NRF_DropA_Daily_FT_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="NRF DropA Daily FT",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="NRF_function_test_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="NRF function test",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="NRF_precommit_check_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="NRF precommit check",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="NRFCLIENT_DropA_Daily_FT_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="NRFCLIENT DropA Daily FT",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="NRFclient_function_test_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="NRFclient function test",
+             data-text="Jenkins">
+        </div>
+        <div style="width:94%" class="job" data-id="NRFCLIENT_precommit_check_fem101-eiffel012",
+             data-view="JenkinsBuild", data-title="NRFCLIENT precommit check",
+             data-text="Jenkins">
+        </div>
+    </div>
+</div>
+<div onclick="backtotop()" id="backtotop"
+    style="cursor: pointer; position: fixed; bottom: 0px; right: 0px; transform: rotate(-90deg); -webkit-transform: rotate(-90deg); font-weight: bold; font-size: 40px; color: magenta; margin-right: 5px;">&gt;
+</div>

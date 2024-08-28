@@ -1,0 +1,17 @@
+python:
+   version: 2.7.10
+   virtualenv: 13.1.2
+   pip_installer: 9.0.1
+   PyYAML: 3.11
+   pip2pi: 0.6.8
+   requirements_pre: |
+      gitdb2==2.0.0
+      GitPython==2.1.3
+      pbr==2.0.0
+      six==1.10.0
+      smmap2==2.0.1
+      stevedore==1.21.0
+   requirements: |
+      bandit==1.4.0
+   requirements_post: |
+

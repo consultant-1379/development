@@ -1,0 +1,26 @@
+/cmd_list
+
+*.pyc
+*.egg-info
+dist
+.python-version
+
+# IntelliJ idea folder
+.idea
+
+# Pytest .cache folder
+.cache
+
+# Logs
+*.log
+
+# Binary files
+bin
+
+# Projects eclipse
+.project
+
+env/cfg/kubernetes/admin.conf
+
+# The submodule jenkins
+adp-cicd-jenkins-mod

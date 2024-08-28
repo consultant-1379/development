@@ -1,0 +1,27 @@
+#!/bin/sh
+
+###############################################################################
+# Configuration
+###############################################################################
+
+if ! hash p4merge 2> /dev/null; then
+   echo "`basename $0`:error: p4merge not found in the path" 1>&2
+   exit 1
+fi
+
+BASE="$1"
+LOCAL="$2"
+REMOTE="$3"
+MERGED="$4"
+
+###############################################################################
+# Main
+###############################################################################
+
+${DEV_5GCICD_ROOT}/env/sanity/pretty "$BASE"
+${DEV_5GCICD_ROOT}/env/sanity/pretty "$LOCAL"
+${DEV_5GCICD_ROOT}/env/sanity/pretty "$REMOTE"
+
+p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+
+rm -f "$BASE" "$LOCAL" "$REMOTE"

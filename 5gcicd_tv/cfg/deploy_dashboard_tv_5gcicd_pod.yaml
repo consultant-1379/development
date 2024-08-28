@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-tv-5gcicd-serv
+  namespace: tv-5gcicd
+  labels:
+    app: dashboard-tv-5gcicd
+spec:
+  type: NodePort
+  ports:
+  - name: dash
+    port: 3030
+    targetPort: 3030
+  selector:
+    app: dashboard-tv-5gcicd-serv
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dashboard-tv-5gcicd
+  labels:
+    app: dashboard-tv-5gcicd
+  namespace: tv-5gcicd
+spec:
+   volumes:
+   - name: dashing-assets-vol
+     persistentVolumeClaim:
+       claimName: dashing-assets
+   - name: dashing-config-vol
+     persistentVolumeClaim:
+       claimName: dashing-config
+   - name: dashing-dashboards-vol
+     persistentVolumeClaim:
+       claimName: dashing-dashboards
+   - name: dashing-jobs-vol
+     persistentVolumeClaim:
+       claimName: dashing-jobs
+   - name: dashing-widgets-vol
+     persistentVolumeClaim:
+       claimName: dashing-widgets
+   - name: gerritpk-adp
+     secret:
+       secretName: "gerritpk-adp"
+   - name: userpwd-adp
+     secret:
+       secretName: "userpwd-adp"
+   restartPolicy: Always
+   terminationGracePeriodSeconds: 30
+   dnsPolicy: ClusterFirst
+   imagePullSecrets:
+    - name: userpwd-adp
+   containers:
+   - name: dashboard-tv-5gcicd
+     image: visibilityspots/smashing:latest
+     imagePullPolicy: Always
+     volumeMounts:
+       - mountPath: "/assets/"
+         name: dashing-assets-vol
+       - mountPath: "/config/"
+         name: dashing-config-vol
+       - mountPath: "/dashboards/"
+         name: dashing-dashboards-vol
+       - mountPath: "/jobs/"
+         name: dashing-jobs-vol
+       - mountPath: "/widgets/"
+         name: dashing-widgets-vol
+       - mountPath: /root/.ssh/adp
+         name: gerritpk-adp
+         readOnly: true
+       - mountPath: /root/.docker/adp
+         name: userpwd-adp
+         readOnly: true
+     ports:
+       - containerPort: 3030
+         name: dash-port
+     env:
+       - name: GEMS
+         value: "thin faye therubyracer coffee-script json sinatra netrc mime-types rdoc rest-client"
+       - name: TV_5GCICD_USER
+         valueFrom:
+           secretKeyRef:
+             name: secret-tv-5gcicd-user-pass
+             key: username
+       - name: TV_5GCICD_PASS
+         valueFrom:
+           secretKeyRef:
+             name: secret-tv-5gcicd-user-pass
+             key: password

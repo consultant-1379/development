@@ -1,0 +1,66 @@
+#!/bin/sh
+
+git config --replace-all core.preloadindex true
+   # to speed up NFS git status command
+   # http://stackoverflow.com/questions/2872587/git-can-i-speed-up-committing
+git config --replace-all core.pager "less -r"
+   # required for the 'pl' alias to colorize the output
+
+git config --replace-all fetch.prune true
+
+git config --replace-all push.default upstream
+
+git config --replace-all branch.autosetuprebase always
+   # setup pull --rebase as default for every new branch
+   # or manually for every branch you have with 'git config branch.BRANCH_NAME.rebase true' (replace BRANCH_NAME as required)
+   # Note that you can disable automatic rebasing when needed by 'git pull --no-rebase'
+git config --replace-all branch.master.rebase true
+   # master branch (a special one!) needs to be set in this way
+
+git config --replace-all alias.pl "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+git config --replace-all alias.lf "log --follow"
+   # enables 'git pl' command for pretty logging git history ;)
+git config --replace-all alias.st status
+git config --replace-all alias.ci commit
+git config --replace-all alias.co checkout
+git config --replace-all alias.br branch
+git config --replace-all alias.amend "commit -a --amend --no-edit"
+git config --replace-all alias.blamed "! sh -c '\$DEV_5GCICD_ROOT/env/git/tools/git-blamed \$*' -"
+git config --replace-all alias.cherry-pick-remote "! sh -c 'git --git-dir=\$1/.git format-patch -k -1 --stdout \$2 | git am -3 -k'"
+   # cherry picking from another repository: $1="remote repository path" $2="remote commit HASH"
+git config --replace-all alias.pull-lsv "! sh -c '\$DEV_5GCICD_ROOT/env/git/tools/pull-lsv'"
+
+# pushing changes
+git config --replace-all alias.push-master "! sh -c 'git push origin \${1:-HEAD}:refs/publish/master' -"
+
+ALL_5GCICD_DEV_TEAM="r=roberto.valseca@blue-tc.com,r=jesus.javier.arauz@ericsson.com,\
+r=veronica.gomez.gomez@ericsson.com,r=alberto.quintanaheras@altran.com,r=cesar.albalozano@altran.com, r=jacobo.jimenez.martinez@ericsson.com"
+CICD5G_TEAM="r=roberto.valseca@blue-tc.com,r=jesus.javier.arauz@ericsson.com,r=veronica.gomez.gomez@ericsson.com,\
+r=alberto.quintanaheras@altran.com,r=cesar.albalozano@altran.com, r=jacobo.jimenez.martinez@ericsson.com"
+git config --replace-all alias.review-cicd5g-dev-team "! sh -c 'git push origin ${1:-HEAD}:refs/publish/master%${CICD5G_TEAM}' -"
+git config --replace-all alias.review-all-cicd5g-dev-team "! sh -c 'git push origin ${1:-HEAD}:refs/publish/master%${ALL_5GCICD_DEV_TEAM}' -"
+
+git config --replace-all alias.publish "! sh -c 'git push origin \${2:-HEAD}:refs/publish/\$1' -"
+git config --replace-all alias.draft "! sh -c 'git push origin \${2:-HEAD}:refs/publish/\$1%draft' -"
+git config --replace-all alias.private "! sh -c 'git push origin HEAD:refs/publish/\${USER}/\$1' -"
+
+git config --replace-all alias.fshow "! sh -c 'git show --pretty=format: --name-only \$1 | grep -v ^\$ | uniq | sed s@^@\`git rev-parse --show-toplevel\`/@' -"
+git config --replace-all alias.vim "! sh -c 'vim \`git fshow \$1\`' -"
+   # to see a list of files changed over the last four revisions, I could type:
+   # $ git fshow HEAD~5..
+   # to open those files for editing, use the second alias:
+   # $ git vim HEAD~5..
+
+git config --replace-all diff.tool p4merge
+git config --replace-all diff.guitool p4merge
+git config --replace-all difftool.p4merge.cmd ${DEV_5GCICD_ROOT}'/env/git/tools/diff-p4merge'
+
+git config --replace-all merge.tool p4merge
+git config --replace-all merge.guitool p4merge
+git config --replace-all mergetool.p4merge.cmd ${DEV_5GCICD_ROOT}'/env/git/tools/merge-p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
+git config --replace-all mergetool.p4merge.trustExitCode false
+
+git config --replace-all commit.template ${DEV_5GCICD_ROOT}'/env/git/hooks/prepare-commit.txt'
+
+# Always access github through HTTPS to avoid proxy problems. For some reason, this seen to work with --global only
+git config --global --replace-all url.https://github.com/.insteadOf git://github.com/

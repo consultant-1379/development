@@ -1,0 +1,31 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  green;
+
+$title-color:       rgba(255, 255, 255, 0.7);
+$moreinfo-color:    rgba(255, 255, 255, 0.7);
+
+// ----------------------------------------------------------------------------
+// Widget-text styles
+// ----------------------------------------------------------------------------
+.widget-metrics-window {
+  background-color: $background-color;
+  .title {
+    color: $title-color;
+  }
+  .more-info {
+    color: $moreinfo-color;
+  }
+  .updated-at {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  h3 {
+    font-size: 20px;
+  }
+  
+   .small {
+    font-size: 0.8em;
+  }
+}

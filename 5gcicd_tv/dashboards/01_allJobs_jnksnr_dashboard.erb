@@ -1,0 +1,457 @@
+<script type='text/javascript'>
+$(function() {
+  // These settings override the defaults set in application.coffee. You can do this on a per dashboard basis.
+  //Dashing.gridsterLayout('[{"col":2,"row":1},{"col":1,"row":1},{"col":3,"row":1},{"col":2,"row":2},{"col":3,"row":2},{"col":1,"row":2},{"col":5,"row":1},{"col":4,"row":2},{"col":2,"row":3}]')
+  Dashing.widget_base_dimensions = [350, 290]
+  //Dashing.widget_margins = [5, 5]
+  //Dashing.numColumns = 5
+});
+$(document).ready (function(e){
+    $("#job-selector").html('')
+    $("div[data-text='Jenkins']").each(function(){
+      jobDiv = $("#job-selector").append($("<div />")
+                  .attr("id", $(this).attr("data-id"))
+                  .attr("jobselectable", "true")
+                  .text($(this).attr("data-title"))
+                  .css("cursor","pointer"));
+    });
+});
+function blinker(dataid) {
+    for (i=0;i < 5; i++){
+        $("div[data-id='" + dataid + "']").fadeOut(500);
+        $("div[data-id='" + dataid + "']").fadeIn(500);
+    }
+    setTimeout(function(){
+           $("div[data-id='" + dataid + "']").stop(false, true, true);
+    }, 1000)
+}
+$(document).on ('click', "div[jobselectable='true']", function(e){
+    var dataid = $(this).attr("id");
+    var datatitle = $(this).text();
+    var divtofocus = $("div[data-id='" + dataid + "']")
+    $('html, body').animate({ scrollTop: $("div[data-id='" + dataid + "']").offset().top }, 500);
+    blinker (dataid);
+})
+function backtotop() {
+    $('html, body').animate({ scrollTop: 0 }, 'fast');
+}
+</script>
+
+<style type="text/css">
+    body {
+      overflow-x: hidden;
+    }
+
+    li {
+      float: left;
+      position: relative;
+      display: inline-block;
+      width: 24%;
+      padding: 0;
+      margin: 0;
+      border: 4px solid #222222;
+    }
+
+    .divgridster {
+      width: 100%;
+      margin: 10px;
+    }
+
+    h2 {
+      font-size: 16px;
+    }
+
+    h4 {
+      font-size: 16px;
+    }
+
+    .title {
+      width: 100%;
+      margin-bottom: 11px;
+      white-space: nowrap;
+    }
+
+    .widget {
+      font-size: 10px;
+      padding: 25px 12px;
+      text-align: center;
+      width: inherit;
+      display: table-cell;
+      vertical-align: middle;
+    }
+</style>
+
+<div style="background-color: gray;/* padding: 10px; */padding-top: 5px;padding-left: 20px;padding-bottom: 3px;color:white;margin-bottom: 0px;margin-left: 14px;margin-top: 14px;text-align: center;font-weight: bold;width: 23%;border-bottom: 2px solid black;">
+  JOB FINDER
+</div>
+<div style="width:100%">
+  <div id="job-selector" style="float: left; height: 200px; overflow-x: hidden; overflow-y: scroll; width: 23%; margin-bottom: 14px; margin-left: 14px; background: grey; font-size: 18px; padding: 10px;"></div>
+  <div style="background-color: rgb(0, 0, 255) none repeat scroll 0% 0%; color: rgb(0, 0, 0); float: right; width: 71%; height: 200px; margin-bottom: 14px; margin-left: 0px; margin-right: 39px; background: grey; font-size: 80px; text-align: center; padding: 10px; position: relative; padding-left: 23px;">
+    <p>JNKSNR-JENKINS</p>
+    <p>ALL JOBS</p>
+  </div>
+</div>
+<div onclick="backtotop()" id="backtotop" style="cursor: pointer; position: fixed; bottom: 0px; right: 0px; transform: rotate(-90deg); -webkit-transform: rotate(-90deg); font-weight: bold; font-size: 40px; color: magenta; margin-right: 5px;">&gt;
+</div>
+<div class="divgridster">
+  <ul style="width: 100%; list-style: none outside none">
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="_helm_generate_UDM_NF_standalone_jnksnr", data-view="JenkinsBuild", data-title="helm generate UDM NF standalone", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="AUSF_DropA_Daily_FT_jnksnr", data-view="JenkinsBuild", data-title="AUSF DropA Daily FT", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="AUSF_Function_Test_jnksnr", data-view="JenkinsBuild", data-title="AUSF Function Test", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="AUSF_precommit_check_jnksnr", data-view="JenkinsBuild", data-title="AUSF precommit check", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_ADP_for_UDM_solution_jnksnr", data-view="JenkinsBuild", data-title="helm generate ADP for UDM solution", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_AUSF_NF_standalone_jnksnr", data-view="JenkinsBuild", data-title="helm generate AUSF NF standalone", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_AUSF_specific_jnksnr", data-view="JenkinsBuild", data-title="helm generate AUSF specific", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_NRF_NF_standalone_jnksnr", data-view="JenkinsBuild", data-title="helm generate NRF NF standalone", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_NRF_specific_jnksnr", data-view="JenkinsBuild", data-title="helm generate NRF specific", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_NSSF_NF_standalone_jnksnr", data-view="JenkinsBuild", data-title="helm generate NSSF NF standalone", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_NSSF_specific_jnksnr", data-view="JenkinsBuild", data-title="helm generate NSSF specific", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_PCF_NF_standalone_jnksnr", data-view="JenkinsBuild", data-title="helm generate PCF NF standalone", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_PCF_specific_jnksnr", data-view="JenkinsBuild", data-title="helm generate PCF specific", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_UDM_ALL_jnksnr", data-view="JenkinsBuild", data-title="helm generate UDM ALL", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_UDM_AUSF_jnksnr", data-view="JenkinsBuild", data-title="helm generate UDM AUSF", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_UDM_NF_standalone_jnksnr", data-view="JenkinsBuild", data-title="helm generate UDM NF standalone", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_UDM_NF_standalone_TEST_jnksnr", data-view="JenkinsBuild", data-title="helm generate UDM NF standalone TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_UDM_testware_jnksnr", data-view="JenkinsBuild", data-title="helm generate UDM testware", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_UDR_NF_standalone_jnksnr", data-view="JenkinsBuild", data-title="helm generate UDR NF standalone", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="helm_generate_UDR_specific_jnksnr", data-view="JenkinsBuild", data-title="helm generate UDR specific", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_adp-generic-services_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G adp-generic-services", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_adp-generic-services_TEST_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G adp-generic-services TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_apigw_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G apigw", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_apigw4g_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G apigw4g", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_apigw_TEST_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G apigw TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_authevents_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G authevents", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_cmproxy_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G cmproxy", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_dbproxy_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G dbproxy", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_deploy_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G deploy", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_deploy_TEST_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G deploy TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_apigw_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT apigw", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_apigw_TEST_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT apigw TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_dbproxy_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT dbproxy", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_sdmaccessmobility_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT sdmaccessmobility", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_sdmaccessmobility_TEST_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT sdmaccessmobility TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_sdmnssai_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT sdmnssai", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_sdmsmdata_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT sdmsmdata", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_sdmsmfselection_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT sdmsmfselection", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_sdmsubscriptions_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT sdmsubscriptions", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_udrsim_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT udrsim", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_ueauth_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT ueauth", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_uecmamfregupdate_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT uecmamfregupdate", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_uecmreg_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT uecmreg", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_uecmsmfregistration_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G FT uecmsmfregistration", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_ft_utils_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G ft utils", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_healthproxy_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G healthproxy", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_hss4gnotifier_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G hss4gnotifier", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_lmproxy_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G lmproxy", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_lmproxy_TEST_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G lmproxy TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_mason_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G mason", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_notifier_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G notifier", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_nrfgw_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G nrfgw", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_nrfsim_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G nrfsim", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_pmproxy_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G pmproxy", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_promotion_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G promotion", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_sdmaccessmobility_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G sdmaccessmobility", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_sdmnssai_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G sdmnssai", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_sdmsmdata_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G sdmsmdata", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_sdmsmfselection_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G sdmsmfselection", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_sdmsmfselection_TEST_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G sdmsmfselection TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_sdmsubscriptions_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G sdmsubscriptions", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_sidecar_log_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G sidecar log", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_staging_udm-umbrella_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G staging udm umbrella", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_udrsim_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G udrsim", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_ueauth_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G ueauth", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_uecmamfget_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G uecmamfget", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_uecmamfregupdate_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G uecmamfregupdate", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_uecmreg_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G uecmreg", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_uecmsmfderegistration_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G uecmsmfderegistration", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_uecmsmfregistration_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G uecmsmfregistration", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_uecmsmsfregistration_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G uecmsmsfregistration", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_ueshcm_jnksnr", data-view="JenkinsBuild", data-title="HSS 5G ueshcm", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="NRF_DropA_Daily_FT_jnksnr", data-view="JenkinsBuild", data-title="NRF DropA Daily FT", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="NRF_function_test_jnksnr", data-view="JenkinsBuild", data-title="NRF function test", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="NRF_precommit_check_jnksnr", data-view="JenkinsBuild", data-title="NRF precommit check", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="NRFCLIENT_DropA_Daily_FT_jnksnr", data-view="JenkinsBuild", data-title="NRFCLIENT DropA Daily FT", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="NRFclient_function_test_jnksnr", data-view="JenkinsBuild", data-title="NRFclient function test", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="NRFCLIENT_precommit_check_jnksnr", data-view="JenkinsBuild", data-title="NRFCLIENT precommit check", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_common_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G common", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_CT_slice-selection-control_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G CT slice-selection control", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_CT_slice-selection-control2_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G CT slice-selection control2", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_E2E_slice-selection-control_CESAR_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G E2E slice selection control CESAR", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_nssf_deploy_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G nssf deploy", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_provisioning_TEST_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G provisioning TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_provisioning_TEST2_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G provisioning TEST2", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_slice-selection-control_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G slice-selection-control", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="Policy_5G_slice-selection-control_TEST_jnksnr", data-view="JenkinsBuild", data-title="Policy 5G slice-selection-control TEST", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDM_5G_promote-to-release_jnksnr", data-view="JenkinsBuild", data-title="UDM 5G promote to release", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDM_5G_promote-to-staging_jnksnr", data-view="JenkinsBuild", data-title="UDM 5G promote to staging", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR-integration-build-test-job_jnksnr", data-view="JenkinsBuild", data-title="UDR integration build test", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR-mvn-library-common-job_jnksnr", data-view="JenkinsBuild", data-title="UDR mvn library common", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR-mvn-library-config-model-job_jnksnr", data-view="JenkinsBuild", data-title="UDR mvn library config model", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR-mvn-library-ldap-pool-job_jnksnr", data-view="JenkinsBuild", data-title="UDR mvn library ldap pool", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR-mvn-library-parent-job_jnksnr", data-view="JenkinsBuild", data-title="UDR mvn library parent", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR-release-job_jnksnr", data-view="JenkinsBuild", data-title="UDR release", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR-release-job-test_jnksnr", data-view="JenkinsBuild", data-title="UDR release job test", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_backuprestore-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR backuprestore merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_backuprestore-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR backuprestore testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_cmagent-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR cmagent merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_cmagent-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR cmagent testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_dbservice-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR dbservice merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_dbservice-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR dbservice testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_init_dependency_checker-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR init dependency checker merge job", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_init_dependency_checker-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR init dependency checker testing job", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_integration-test-image-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR integration test image merge job", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_integration-test-image-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR integration test image testing job", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_ldap_balancer-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR ldap balancer merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_ldap_balancer-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR ldap balancer testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_ldapfe-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR ldapfe merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_ldapfe-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR ldapfe testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_notifchecker-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR notifchecker merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_notifchecker-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR notifchecker testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_notifsender-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR notifsender merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_notifsender-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR notifsender testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_nudrfe-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR nudrfe merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_nudrfe-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR nudrfe testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_pipeline_verify_jnksnr", data-view="JenkinsBuild", data-title="UDR pipeline verify", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_release-merge-job_jnksnr", data-view="JenkinsBuild", data-title="UDR release merge", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="UDR_release-testing-job_jnksnr", data-view="JenkinsBuild", data-title="UDR release testing", data-min="0" data-max="100", data-text="Jenkins"></div>
+    </li>
+  </ul>
+</div>
+

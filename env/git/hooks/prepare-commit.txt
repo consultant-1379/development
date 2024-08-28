@@ -1,0 +1,16 @@
+# 1. Start with short description max 50 characters
+# (leave an empty line after short description)
+
+
+# 2. Continue with optional detailed description wrapped at 72 characters
+# 3. Uncomment "# Activity:" line below and add your activity if applicable
+
+# Activity: 
+#  Examples of different activities:
+#    ClearQuest  -> Activity: GGSN00012345
+#    Redmine     -> Activity: RM1234
+#    Workpackage -> Activity: WP1234
+#    Feature     -> Activity: ATM123
+
+# Co-Authored-By: name <name@ericsson.com>
+#  If multiple author is present for a commit we encourage adding this to the commit message.

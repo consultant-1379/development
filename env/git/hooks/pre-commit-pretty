@@ -1,0 +1,20 @@
+#!/bin/sh
+
+##############################################################################
+# Main
+###############################################################################
+
+# necessary check for initial commit
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+   against=HEAD
+else
+   # Initial commit: diff against an empty tree object
+   against=1a7a4ce6b2f0dd5298c27d5cc6782717604a7032
+fi
+
+# create one patch containing all changes to the files
+git diff-index --cached --name-only --diff-filter=ACMR $against -- \
+| while read FILE; do
+   ${DEV_5GCICD_ROOT}/env/sanity/pretty $FILE
+   git add $FILE
+done

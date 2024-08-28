@@ -1,0 +1,119 @@
+#!/bin/sh
+
+###############################################################################
+# Configuration
+###############################################################################
+
+if [ $# -ne 1 ]; then
+   echo "usage: `basename $0` <file>" 1>&2
+   exit 1
+fi
+
+FILE="$1"
+
+set -e # exit on errors
+
+hash astyle 2> /dev/null \
+|| { echo "`basename $0`:error: astyle not found in the path" 1>&2 \
+   ; exit 1
+   }
+hash mapgroup 2> /dev/null \
+|| { echo "`basename $0`:error: mapgroup not found in the path" 1>&2 \
+   ; exit 1
+   }
+hash xmllint 2> /dev/null \
+|| { echo "`basename $0`:error: xmllint not found in the path" 1>&2 \
+   ; exit 1
+   }
+
+BLANKER="${DEV_5GCICD_ROOT}/env/sanity/clean-blank-lines"
+if [ ! -e "$BLANKER" ]; then
+   echo "`basename $0`:error: $BLANKER does not exist" 1>&2
+   exit 1
+fi
+
+FILETYPES=${DEV_5GCICD_ROOT}/env/bash/filetypes.sh
+if [ ! -e $FILETYPES ]; then
+   echo "`basename $0`:error: file $FILETYPES not found" 1>&2
+   exit 1
+fi
+source $FILETYPES
+
+###############################################################################
+# File Type Astyle Formatting Options
+###############################################################################
+
+CXX_HEADER_FORMAT=" \
+   --style=ansi \
+   --indent=spaces=3 \
+   --keep-one-line-statements \
+   --align-pointer=type \
+   --align-reference=type \
+   --break-blocks \
+   --pad-oper \
+   --pad-header \
+   --indent-col1-comments \
+   --indent-preprocessor \
+   --indent-labels \
+   --indent-namespaces \
+   --convert-tabs \
+   --delete-empty-lines \
+   --break-after-logical \
+   "
+
+CXX_SOURCE_FORMAT="$CXX_HEADER_FORMAT \
+   --unpad-paren \
+   "
+
+TTCN_FORMAT=" \
+   --style=ansi \
+   --indent=spaces=3 \
+   --keep-one-line-statements \
+   --break-blocks \
+   --pad-header \
+   --indent-col1-comments \
+   --delete-empty-lines \
+   --convert-tabs \
+   --delete-empty-lines \
+   --break-after-logical \
+   --unpad-paren \
+   "
+
+###############################################################################
+# Main
+###############################################################################
+
+if is_cxx_header "$FILE"; then
+   astyle --suffix=none --quiet $CXX_HEADER_FORMAT "$FILE"
+   LANG=C # required for sort to handle non-alphabetical characters
+   mapgroup --suffix=none '/usr/bin/sort --ignore-case --uniq' '^\s*(#include|using )' "$FILE"
+   $BLANKER "$FILE"
+elif is_cxx_source "$FILE"; then
+   astyle --suffix=none --quiet $CXX_SOURCE_FORMAT "$FILE"
+   LANG=C # required for sort to handle non-alphabetical characters
+   mapgroup --suffix=none '/usr/bin/sort --ignore-case --uniq' '^\s*(#include|using )' "$FILE"
+   $BLANKER "$FILE"
+elif is_ttcn "$FILE"; then
+   # trick to format TTCN with astyle (which does not recognize TTCN)
+   sed -i 's| *:= *|/*:*/ =|g' "$FILE"
+   astyle --suffix=none --quiet $TTCN_FORMAT "$FILE"
+   # undoing the trick
+   sed -i 's|/\*:\*/ =| := |g' "$FILE"
+   sed -i 's|:= $|:=|'         "$FILE"
+   mapgroup --suffix=none '/usr/bin/sort --ignore-case --uniq' '^\s*import from' "$FILE"
+   $BLANKER "$FILE"
+elif is_xml "$FILE"; then
+   XML_DECL=`grep '<?xml version="1.0"?>' "$FILE"` || true
+   export XMLLINT_INDENT='   ' # use this if you prefer tabs: `echo -e '\t'`
+   xmllint --format --output "$FILE" "$FILE"
+   [[ -n "$XML_DECL" ]] || {
+      TMP=`mktemp`
+      tail +2 "$FILE" > $TMP
+      cp $TMP "$FILE"
+      rm -f $TMP
+   }
+elif is_python "$FILE"; then
+   mapgroup --suffix=none '/usr/bin/sort --ignore-case --uniq' '^\s*from.*import' "$FILE"
+   mapgroup --suffix=none '/usr/bin/sort --ignore-case --uniq' '^\s*import' "$FILE"
+   $BLANKER "$FILE"
+fi

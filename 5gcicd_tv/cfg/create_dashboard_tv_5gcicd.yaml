@@ -1,0 +1,65 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: "create-dashing"
+  namespace: tv-5gcicd
+spec:
+  volumes:
+    - name: dashing-dashboards-vol
+      persistentVolumeClaim:
+        claimName: dashing-dashboards
+    - name: dashing-jobs-vol
+      persistentVolumeClaim:
+        claimName: dashing-jobs
+    - name: dashing-public-vol
+      persistentVolumeClaim:
+        claimName: dashing-public
+    - name: dashing-assets-vol
+      persistentVolumeClaim:
+        claimName: dashing-assets
+    - name: dashing-widgets-vol
+      persistentVolumeClaim:
+        claimName: dashing-widgets
+    - name: dashing-config-vol
+      persistentVolumeClaim:
+        claimName: dashing-config
+    - name: dashing-clone-vol
+      persistentVolumeClaim:
+        claimName: dashing-clone
+
+    - name: gerritpk-adp
+      secret:
+        secretName: "gerritpk-adp"
+    - name: userpwd-adp
+      secret:
+        secretName: "userpwd-adp"
+  containers:
+  - name: "create-dashing"
+    image: "ubuntu:latest"
+    imagePullPolicy: Always
+    volumeMounts:
+      - mountPath: "/dashboards/"
+        name: dashing-dashboards-vol
+      - mountPath: "/jobs/"
+        name: dashing-jobs-vol
+      - mountPath: "/public/"
+        name: dashing-public-vol
+      - mountPath: "/assets/"
+        name: dashing-assets-vol
+      - mountPath: "/widgets/"
+        name: dashing-widgets-vol
+      - mountPath: "/config/"
+        name: dashing-config-vol
+      - mountPath: "/clone/"
+        name: dashing-clone-vol
+      - mountPath: /root/.ssh/adp
+        name: gerritpk-adp
+        readOnly: true
+      - mountPath: /root/.docker/adp
+        name: userpwd-adp
+        readOnly: true
+    command: [ "sleep" ]
+    args: [ "infinity" ]
+  restartPolicy: Never
+
+

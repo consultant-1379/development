@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: volc-nightly-logs
+  namespace: 5gcicd-nightly
+spec:
+  resources:
+    requests:
+      storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: erikube-nfs
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nightly-jenkins
+  labels:
+    app: nightly-jenkins
+  namespace: 5gcicd-nightly
+spec:
+   volumes:
+    - name: vol-log
+      persistentVolumeClaim:
+        claimName: volc-nightly-logs
+    - name: gerritpk
+      secret:
+        secretName: "gerritsecret"
+   restartPolicy: Always
+   terminationGracePeriodSeconds: 30
+   dnsPolicy: ClusterFirst
+   schedulerName: default-scheduler
+   imagePullSecrets:
+    - name: armdocker
+   containers:
+     - name: nightly-jenkins
+       image: armdocker.rnd.ericsson.se/proj-5g-cicd-dev/jenkins/jenkins-nightly:1.1.0
+       terminationMessagePath: "/dev/termination-log"
+       terminationMessagePolicy: File
+       imagePullPolicy: Always
+       volumeMounts:
+         - mountPath: /var/5gcicd-development/testing_results/
+           name: vol-log
+         - mountPath: /root/.ssh
+           name: gerritpk
+       env:
+       - name: ARMDOCKER_USER
+         valueFrom:
+           secretKeyRef:
+             name: secret-nightly-user-pass
+             key: username
+       - name: ARMDOCKER_PASS
+         valueFrom:
+           secretKeyRef:
+             name: secret-nightly-user-pass
+             key: password
+
+

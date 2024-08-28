@@ -1,0 +1,94 @@
+<script type='text/javascript'>
+$(function() {
+  // These settings override the defaults set in application.coffee. You can do this on a per dashboard basis.
+  //Dashing.gridsterLayout('[{"col":2,"row":1},{"col":1,"row":1},{"col":3,"row":1},{"col":2,"row":2},{"col":3,"row":2},{"col":1,"row":2},{"col":5,"row":1},{"col":4,"row":2},{"col":2,"row":3}]')
+  Dashing.widget_base_dimensions = [350, 290]
+  //Dashing.widget_margins = [5, 5]
+  //Dashing.numColumns = 5
+});
+$(document).ready (function(e){
+    $("#job-selector").html('')
+    $("div[data-text='Jenkins']").each(function(){
+      jobDiv = $("#job-selector").append($("<div />")
+                  .attr("id", $(this).attr("data-id"))
+                  .attr("jobselectable", "true")
+                  .text($(this).attr("data-title"))
+                  .css("cursor","pointer"));
+    });
+});
+function blinker(dataid) {
+    for (i=0;i < 5; i++){
+        $("div[data-id='" + dataid + "']").fadeOut(500);
+        $("div[data-id='" + dataid + "']").fadeIn(500);
+    }
+    setTimeout(function(){
+           $("div[data-id='" + dataid + "']").stop(false, true, true);
+    }, 1000)
+}
+$(document).on ('click', "div[jobselectable='true']", function(e){
+    var dataid = $(this).attr("id");
+    var datatitle = $(this).text();
+    var divtofocus = $("div[data-id='" + dataid + "']")
+    $('html, body').animate({ scrollTop: $("div[data-id='" + dataid + "']").offset().top }, 500);
+    blinker (dataid);
+})
+function backtotop() {
+    $('html, body').animate({ scrollTop: 0 }, 'fast');
+}
+</script>
+
+<style type="text/css">
+    body {
+      overflow-x: hidden;
+    }
+
+    li {
+      float: left;
+      position: relative;
+      display: inline-block;
+      width: 24%;
+      padding: 0;
+      margin: 0;
+      border: 4px solid #222222;
+    }
+
+    .divgridster {
+      width: 100%;
+      margin: 10px;
+    }
+
+    h2 {
+      font-size: 16px;
+    }
+
+    h4 {
+      font-size: 16px;
+    }
+
+    .title {
+      width: 100%;
+      margin-bottom: 11px;
+      white-space: nowrap;
+    }
+
+    .widget {
+      font-size: 10px;
+      padding: 25px 12px;
+      text-align: center;
+      width: inherit;
+      display: table-cell;
+      vertical-align: middle;
+    }
+</style>
+
+<div class="divgridster">
+  <ul style="width: 100%; list-style: none outside none">
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_mason_status_fem101-eiffel012", data-view="BuildWindow", data-title="HSS 5G mason", data-text="Jenkins"></div>
+    </li>
+    <li data-sizex="1" data-sizey="1">
+      <div data-id="HSS_5G_FT_ueauth_status_fem101-eiffel012", data-view="BuildWindow", data-title="HSS 5G FT ueauth", data-text="Jenkins"></div>
+    </li>
+  </ul>
+</div>
+

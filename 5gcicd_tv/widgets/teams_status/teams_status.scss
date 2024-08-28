@@ -1,0 +1,59 @@
+// ----------------------------------------------------------------------------
+// Mixins
+// ----------------------------------------------------------------------------
+@mixin transition($transition-property, $transition-time, $method) {
+  -webkit-transition: $transition-property $transition-time $method;
+  -moz-transition: $transition-property $transition-time $method;
+  -o-transition: $transition-property $transition-time $method;
+  transition: $transition-property $transition-time $method;
+}
+
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color: #000000;
+$value-color: #FFFFFF;
+//$title-color: rgba(255, 255, 255, 0.7);
+//$updated-at-color: rgba(0, 0, 0, 0.3);
+
+// ----------------------------------------------------------------------------
+// Widget-teams_status styles
+// ----------------------------------------------------------------------------
+.widget-teams_status {
+
+  background-color: $background-color;
+  @include transition(background-color, 1s, linear);
+
+  .title {
+ }
+
+  .value {
+    color: $value-color;
+  }
+
+  .priority {
+    color: $value-color;
+  }
+
+  .updated-at {
+  }
+
+}
+
+//Ericsson palette
+.teams_status_black     { background-color: #000000;}
+.teams_status_silver    { background-color: #B1B3B4;}
+.teams_status_grey      { background-color: #333333;}
+.teams_status_purple    { background-color: #7B0663;}
+.teams_status_red       { background-color: #E32119;}
+.teams_status_orange    { background-color: #F08A00;}
+.teams_status_yellow    { background-color: #FABb00;}
+.teams_status_palegreen { background-color: #00C176;}
+.teams_status_green     { background-color: #89BA17;}
+.teams_status_darkgreen { background-color: #00625F;}
+.teams_status_paleblue  { background-color: #00A9D4;}
+.teams_status_blue      { background-color: #0066b3;}
+.teams_status_darkblue  { background-color: #2e4275;}
+.teams_status_white     { background-color: #FFFFFF;}
+
+

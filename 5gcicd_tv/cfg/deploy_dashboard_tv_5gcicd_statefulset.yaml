@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-tv-5gcicd-serv
+  namespace: tv-5gcicd
+  labels:
+    app: dashboard-tv-5gcicd
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3030
+    targetPort: 3030
+  selector:
+    app: dashboard-tv-5gcicd-serv
+
+---
+
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: dashboard-tv-5gcicd
+  labels:
+    app: dashboard-tv-5gcicd
+  namespace: tv-5gcicd
+spec:
+  serviceName: dashboard-tv-5gcicd-serv
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dashboard-tv-5gcicd-serv
+    spec:
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: dashing-assets
+          persistentVolumeClaim:
+            claimName: dashing-assets
+        - name: dashing-config
+          persistentVolumeClaim:
+            claimName: dashing-config
+        - name: dashing-dashboards
+          persistentVolumeClaim:
+            claimName: dashing-dashboards
+        - name: dashing-jobs
+          persistentVolumeClaim:
+            claimName: dashing-jobs
+        - name: dashing-widgets
+          persistentVolumeClaim:
+            claimName: dashing-widgets
+        - name: gerritpk-adp
+          secret:
+            secretName: "gerritpk-adp"
+        - name: userpwd-adp
+          secret:
+            secretName: "userpwd-adp"
+      imagePullSecrets:
+        - name: userpwd-adp
+      containers:
+        - name: dashboard-tv-5gcicd
+          image: visibilityspots/smashing:latest
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: "/assets/"
+            name: dashing-assets
+          - mountPath: "/config/"
+            name: dashing-config
+          - mountPath: "/dashboards/"
+            name: dashing-dashboards
+          - mountPath: "/jobs/"
+            name: dashing-jobs
+          - mountPath: "/widgets/"
+            name: dashing-widgets
+          - mountPath: /root/.ssh/adp
+            name: gerritpk-adp
+            readOnly: true
+          - mountPath: /root/.docker/adp
+            name: userpwd-adp
+            readOnly: true
+          ports:
+          - containerPort: 3030
+            name: dash-port
+          env:
+          - name: GEMS
+            value: "thin faye therubyracer coffee-script json sinatra netrc mime-types rdoc rest-client"
+          - name: TV_5GCICD_USER
+            valueFrom:
+              secretKeyRef:
+                name: secret-tv-5gcicd-user-pass
+                key: username
+          - name: TV_5GCICD_PASS
+            valueFrom:
+              secretKeyRef:
+                name: secret-tv-5gcicd-user-pass
+                key: password
